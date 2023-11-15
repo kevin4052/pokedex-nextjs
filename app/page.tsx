@@ -1,16 +1,11 @@
-import { ReactComponentElement } from 'react';
 import PokeCard from '../components/PokeCard'
-
-interface PokemonItem {
-  name: string,
-  url: string,
-}
+import { PokemonListItem } from '@/types/types';
 
 async function getPokemonList() {
   const responce = await fetch('https://pokeapi.co/api/v2/pokemon?limit=150');
   const data = await responce.json();
 
-  const list: PokemonItem[] = data.results.map((item: { name: string; url: string}) => {
+  const list: PokemonListItem[] = data.results.map((item: { name: string; url: string}) => {
     return {
       name: item.name,
       url: item.url
@@ -22,7 +17,7 @@ async function getPokemonList() {
 
 export default async function Home() {
   const pokemons = await getPokemonList();
-  const pokeCards = pokemons.map((pokemon: PokemonItem, i) => {
+  const pokeCards = pokemons.map((pokemon: PokemonListItem, i) => {
         return <PokeCard key={i + pokemon.name} pokemon={pokemon} id={i + 1} isPriority={i < 10}></PokeCard>
       });
 
