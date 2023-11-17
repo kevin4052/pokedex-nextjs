@@ -1,6 +1,7 @@
 import { Pokemon, PokemonTypes } from "@/types/types";
 import Image from "next/image";
 import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
 
 async function getPokemon(id: string) {  
   const data = await fetch(`https://pokeapi.co/api/v2/pokemon/${id}/`, { cache: 'force-cache' });
@@ -22,12 +23,27 @@ async function getPokemon(id: string) {
   return pokemon;
 }
 
-export default async function PokemonDetails() {
+export default function PokemonDetails() {
   const router = useRouter();
-  const data = await getPokemon(router.query.id as string)
-  return (
-    <div className="container">
-      <h3>{data.name}</h3>
-    </div>
-  );
+  const [data, setData] = useState<Pokemon>();
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    (async () => {
+      const responce = await getPokemon(router.query.id as string)
+      setData(responce);
+      setIsLoading(false);
+    })();
+  }, [router.query.id]);
+
+  if (isLoading) {
+    return <h3>Loading</h3>
+  } else {
+    return (
+      <div className="container">
+        <h3>{data?.name}</h3>
+      </div>
+    )
+  }
+
 }
