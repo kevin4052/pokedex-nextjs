@@ -16,7 +16,10 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={inter.className}>{children}</body>
+      <body className={inter.className}>
+        <nav className='h-16' style={{background: "#46d1b1"}}></nav>
+        {children}
+      </body>
     </html>
   )
 }
